@@ -1,9 +1,10 @@
 import express from 'express'
+import mongoose from "mongoose";
 import Lab5 from "./Lab5/index.js";
 import Hello from "./Hello.js"
 import cors from "cors";
 import db from "./Kambaz/Database/index.js";
-import UserRoutes from "./Kambaz/Users/routes.js";
+import {UserRoutes} from "./Kambaz/Users/routes.js";
 import CourseRoutes from "./Kambaz/Courses/routes.js";
 import ModulesRoutes from "./Kambaz/Modules/routes.js";
 import AssignmentsRoutes from "./Kambaz/Assignments/routes.js";
@@ -14,9 +15,11 @@ const app = express()
 app.use(cors(
     {
         credentials: true,
-        origin: process.env.CLIENT_URL || "http://localhost:3000",
+        origin: process.env.CLIENT_URL || "http://localhost:3000" || "http://10.0.0.118:3000",
     }
 ));
+const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz"
+mongoose.connect(CONNECTION_STRING);
 const sessionOptions = {
     secret: process.env.SESSION_SECRET || "kambaz",
     resave: false,
